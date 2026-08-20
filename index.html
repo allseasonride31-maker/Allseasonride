@@ -1,5 +1,4 @@
-
-html_content = '''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -208,9 +207,15 @@ html_content = '''<!DOCTYPE html>
               <input type="date" id="e-return" required class="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-xl text-white focus:border-blue-400 outline-none transition">
             </div>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-slate-300 mb-1">Pickup Time *</label>
-            <input type="time" id="e-time" required class="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-xl text-white focus:border-blue-400 outline-none transition">
+          <div class="grid md:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-1">Pickup Time *</label>
+              <input type="time" id="e-time" required class="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-xl text-white focus:border-blue-400 outline-none transition">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-1">Drop Time *</label>
+              <input type="time" id="e-droptime" required class="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-xl text-white focus:border-blue-400 outline-none transition">
+            </div>
           </div>
           <div>
             <label class="block text-sm font-medium text-slate-300 mb-1">Pickup Location *</label>
@@ -280,6 +285,12 @@ html_content = '''<!DOCTYPE html>
               <input type="time" id="w-time" required class="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-xl text-white focus:border-green-400 outline-none transition">
             </div>
           </div>
+          <div class="grid md:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-1">Drop Time *</label>
+              <input type="time" id="w-droptime" required class="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-xl text-white focus:border-green-400 outline-none transition">
+            </div>
+          </div>
           <div>
             <label class="block text-sm font-medium text-slate-300 mb-1">Pickup Location *</label>
             <input type="text" id="w-loc" required class="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-xl text-white focus:border-green-400 outline-none transition" placeholder="Address or landmark">
@@ -335,7 +346,6 @@ html_content = '''<!DOCTYPE html>
   </footer>
 
   <script>
-    // EmailJS Config - REPLACE THESE 3 VALUES AFTER SIGNUP
     const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
     const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
     const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
@@ -344,16 +354,13 @@ html_content = '''<!DOCTYPE html>
       emailjs.init(EMAILJS_PUBLIC_KEY);
     }
 
-    // Mobile menu toggle
     document.getElementById('mobileMenuBtn').addEventListener('click', function() {
       document.getElementById('mobileMenu').classList.toggle('hidden');
     });
 
-    // Set min date for all date inputs
     const today = new Date().toISOString().split('T')[0];
     document.querySelectorAll('input[type="date"]').forEach(d => d.setAttribute('min', today));
 
-    // Tab switching
     function switchTab(tab) {
       document.getElementById('panel-email').classList.toggle('hidden', tab !== 'email');
       document.getElementById('panel-whatsapp').classList.toggle('hidden', tab !== 'whatsapp');
@@ -365,14 +372,12 @@ html_content = '''<!DOCTYPE html>
         : 'px-6 py-3 rounded-lg font-bold text-sm transition text-slate-300 hover:text-white';
     }
 
-    // Quick book from fleet cards
     function quickBook(carType) {
       switchTab('whatsapp');
       document.getElementById('w-car').value = carType;
       document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // WhatsApp Booking
     document.getElementById('waForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const data = {
@@ -382,19 +387,19 @@ html_content = '''<!DOCTYPE html>
         pickup: document.getElementById('w-pickup').value,
         return: document.getElementById('w-return').value,
         time: document.getElementById('w-time').value,
+        droptime: document.getElementById('w-droptime').value,
         loc: document.getElementById('w-loc').value,
         msg: document.getElementById('w-msg').value || 'None'
       };
-      const text = `🚗 *New Booking Request - All Season Ride*%0A%0A👤 *Name:* ${data.name}%0A📞 *Phone:* ${data.phone}%0A🚘 *Car:* ${data.car}%0A📅 *Pickup:* ${data.pickup}%0A⏰ *Time:* ${data.time}%0A📅 *Return:* ${data.return}%0A📍 *Location:* ${data.loc}%0A📝 *Notes:* ${data.msg}%0A%0A_Please confirm my booking._`;
+      const text = `🚗 *New Booking Request - All Season Ride*%0A%0A👤 *Name:* ${data.name}%0A📞 *Phone:* ${data.phone}%0A🚘 *Car:* ${data.car}%0A📅 *Pickup:* ${data.pickup}%0A⏰ *Pickup Time:* ${data.time}%0A📅 *Return:* ${data.return}%0A⏰ *Drop Time:* ${data.droptime}%0A📍 *Location:* ${data.loc}%0A📝 *Notes:* ${data.msg}%0A%0A_Please confirm my booking._`;
       window.open(`https://wa.me/919606248573?text=${text}`, '_blank');
     });
 
-    // EmailJS Booking
     document.getElementById('emailForm').addEventListener('submit', function(e) {
       e.preventDefault();
       
       if (EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY") {
-        alert("⚠️ EmailJS not configured yet!\\n\\nPlease follow these steps:\\n1. Go to emailjs.com and sign up\\n2. Add Gmail service\\n3. Create a template\\n4. Replace YOUR_PUBLIC_KEY, YOUR_SERVICE_ID, and YOUR_TEMPLATE_ID in the code.\\n\\nFor now, please use the WhatsApp booking option which works instantly!");
+        alert("⚠️ EmailJS not configured yet!\n\nPlease follow these steps:\n1. Go to emailjs.com and sign up\n2. Add Gmail service\n3. Create a template\n4. Replace YOUR_PUBLIC_KEY, YOUR_SERVICE_ID, and YOUR_TEMPLATE_ID in the code.\n\nFor now, please use the WhatsApp booking option which works instantly!");
         switchTab('whatsapp');
         return;
       }
@@ -413,6 +418,7 @@ html_content = '''<!DOCTYPE html>
         car_type: document.getElementById('e-car').value,
         pickup_date: document.getElementById('e-pickup').value,
         pickup_time: document.getElementById('e-time').value,
+        drop_time: document.getElementById('e-droptime').value,
         return_date: document.getElementById('e-return').value,
         location: document.getElementById('e-loc').value,
         message: document.getElementById('e-msg').value || 'None',
@@ -433,7 +439,6 @@ html_content = '''<!DOCTYPE html>
         });
     });
 
-    // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', function(e) {
         e.preventDefault();
@@ -443,10 +448,4 @@ html_content = '''<!DOCTYPE html>
     });
   </script>
 </body>
-</html>'''
-
-with open('/mnt/agents/output/all_season_ride.html', 'w', encoding='utf-8') as f:
-    f.write(html_content)
-
-print("Full code saved successfully!")
-print(f"File size: {len(html_content)} characters")
+</html>

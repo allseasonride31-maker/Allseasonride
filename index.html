@@ -346,21 +346,28 @@
   </footer>
 
   <script>
-    const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
-    const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
-    const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+    // ============================================================
+    // EMAILJS CONFIG - REPLACE THESE 3 VALUES WITH YOUR REAL KEYS
+    // Get them from: https://www.emailjs.com
+    // ============================================================
+    const EMAILJS_PUBLIC_KEY = "IoBP9HfNuJYbmifro";      // Account > General > Public Key
+    const EMAILJS_SERVICE_ID = "service_nlrryrx";      // Email Services > Your Service ID
+    const EMAILJS_TEMPLATE_ID = "template_9l6y16h";    // Email Templates > Your Template ID
 
-    if (EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+    if (EMAILJS_PUBLIC_KEY !== "IoBP9HfNuJYbmifro") {
       emailjs.init(EMAILJS_PUBLIC_KEY);
     }
 
+    // Mobile menu toggle
     document.getElementById('mobileMenuBtn').addEventListener('click', function() {
       document.getElementById('mobileMenu').classList.toggle('hidden');
     });
 
+    // Set min date for all date inputs (today)
     const today = new Date().toISOString().split('T')[0];
     document.querySelectorAll('input[type="date"]').forEach(d => d.setAttribute('min', today));
 
+    // Tab switching between Email and WhatsApp
     function switchTab(tab) {
       document.getElementById('panel-email').classList.toggle('hidden', tab !== 'email');
       document.getElementById('panel-whatsapp').classList.toggle('hidden', tab !== 'whatsapp');
@@ -372,12 +379,16 @@
         : 'px-6 py-3 rounded-lg font-bold text-sm transition text-slate-300 hover:text-white';
     }
 
+    // Quick book from fleet cards - opens WhatsApp tab with car pre-selected
     function quickBook(carType) {
       switchTab('whatsapp');
       document.getElementById('w-car').value = carType;
       document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
     }
 
+    // ============================================================
+    // WHATSAPP BOOKING - WORKS INSTANTLY, NO SETUP NEEDED
+    // ============================================================
     document.getElementById('waForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const data = {
@@ -395,10 +406,14 @@
       window.open(`https://wa.me/919606248573?text=${text}`, '_blank');
     });
 
+    // ============================================================
+    // EMAILJS BOOKING - REQUIRES EMAILJS SETUP (FREE)
+    // ============================================================
     document.getElementById('emailForm').addEventListener('submit', function(e) {
       e.preventDefault();
       
-      if (EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY") {
+      // Check if EmailJS is configured
+      if (EMAILJS_PUBLIC_KEY === "IoBP9HfNuJYbmifro") {
         alert("⚠️ EmailJS not configured yet!\n\nPlease follow these steps:\n1. Go to emailjs.com and sign up\n2. Add Gmail service\n3. Create a template\n4. Replace YOUR_PUBLIC_KEY, YOUR_SERVICE_ID, and YOUR_TEMPLATE_ID in the code.\n\nFor now, please use the WhatsApp booking option which works instantly!");
         switchTab('whatsapp');
         return;
@@ -409,7 +424,10 @@
       btnText.textContent = 'Sending...';
       btn.disabled = true;
 
+      // Generate booking reference
       const ref = 'ASR-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+      
+      // Collect all form data
       const params = {
         to_email: 'allseasonride31@gmail.com',
         from_name: document.getElementById('e-name').value,
@@ -425,6 +443,7 @@
         booking_ref: ref
       };
 
+      // Send email via EmailJS
       emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params)
         .then(() => {
           document.getElementById('emailForm').classList.add('hidden');
@@ -439,6 +458,7 @@
         });
     });
 
+    // Smooth scroll for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', function(e) {
         e.preventDefault();

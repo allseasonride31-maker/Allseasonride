@@ -354,9 +354,7 @@
     const EMAILJS_SERVICE_ID = "service_nlrryrx";      // Email Services > Your Service ID
     const EMAILJS_TEMPLATE_ID = "template_9l6y16h";    // Email Templates > Your Template ID
 
-    if (EMAILJS_PUBLIC_KEY !== "IoBP9HfNuJYbmifro") {
-      emailjs.init(EMAILJS_PUBLIC_KEY);
-    }
+    emailjs.init(EMAILJS_PUBLIC_KEY);
 
     // Mobile menu toggle
     document.getElementById('mobileMenuBtn').addEventListener('click', function() {
@@ -411,13 +409,6 @@
     // ============================================================
     document.getElementById('emailForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      
-      // Check if EmailJS is configured
-      if (EMAILJS_PUBLIC_KEY === "IoBP9HfNuJYbmifro") {
-        alert("⚠️ EmailJS not configured yet!\n\nPlease follow these steps:\n1. Go to emailjs.com and sign up\n2. Add Gmail service\n3. Create a template\n4. Replace YOUR_PUBLIC_KEY, YOUR_SERVICE_ID, and YOUR_TEMPLATE_ID in the code.\n\nFor now, please use the WhatsApp booking option which works instantly!");
-        switchTab('whatsapp');
-        return;
-      }
 
       const btn = document.getElementById('e-btn');
       const btnText = document.getElementById('e-btnText');
